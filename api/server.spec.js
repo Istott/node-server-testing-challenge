@@ -3,14 +3,14 @@ const supertest = require("supertest");
 const server = require("./server.js");
 const db = require("../data/dbConfig.js");
 
-it("should user the testing environment", () => {
+it("should use the testing environment", () => {
     expect(process.env.DB_ENV).toBe("testing");
 });
 
 describe("server.js", () => {
-    beforeEach(async () => {
-        await db("family").truncate();
-    });
+    // beforeEach(async () => {
+    //     await db("family").truncate();
+    // });
 
     describe("GET /", () => {
         it("should return 200 OK", () => {
@@ -22,13 +22,13 @@ describe("server.js", () => {
                 });
         });
 
-        it("should return api: up", () => {
+        it("should return api: up up and away", () => {
             return supertest(server)
                 .get("/")
                 .then(res => {
                     // jest assertion
-                    expect(res.body.api).toBe("up");
-                    expect(res.body).toEqual({ api: "up" });
+                    expect(res.body.api).toBe("up up and away");
+                    expect(res.body).toEqual({ api: "up up and away" });
                 });
         });
 
@@ -42,32 +42,32 @@ describe("server.js", () => {
         });
     });
 
-    describe("POST /family", () => {
-        it("should post a new family name", () => {
-            const name = "Uhtred";
+    // describe("POST /family", () => {
+    //     it("should post a new family name", () => {
+    //         const name = "Uhtred";
 
-            return supertest(server)
-                .post("/family")
-                .send({ name })
-                .then(res => {
-                    expect(res.body.name).toBe(name);
-                });
-        });
-    });
+    //         return supertest(server)
+    //             .post("/family")
+    //             .send({ name })
+    //             .then(res => {
+    //                 expect(res.body.name).toBe(name);
+    //             });
+    //     });
+    // });
 
-    describe("POST /family", () => {
-        it("should add multiple family names", async () => {
-            const family = [{ name: "bob" }, { name: "hazel" }];
+    // describe("POST /family", () => {
+    //     it("should add multiple family names", async () => {
+    //         const family = [{ name: "bob" }, { name: "hazel" }];
 
-            await supertest(server).post("/family").send(family);
+    //         await supertest(server).post("/family").send(family);
 
-            let allFamilynames = await supertest(server).get("/family");
-            expect(allFamilynames.body).toHaveLength(2);
+    //         let allFamilynames = await supertest(server).get("/family");
+    //         expect(allFamilynames.body).toHaveLength(2);
 
-            await supertest(server).post("/family").send({ name: "rose" });
+    //         await supertest(server).post("/family").send({ name: "rose" });
 
-            allFamilynames = await supertest(server).get("/family");
-            expect(allFamilynames.body).toHaveLength(3);
-        });
-    });
+    //         allFamilynames = await supertest(server).get("/family");
+    //         expect(allFamilynames.body).toHaveLength(3);
+    //     });
+    // });
 });

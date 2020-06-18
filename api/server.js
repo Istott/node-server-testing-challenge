@@ -30,4 +30,21 @@ server.post("/family", (req, res) => {
         });
 });
 
+server.delete("/family/:id", (req, res) => {
+    const { id } = req.params;
+
+    Family.remove(id)
+        .then(deleted => {
+            if (deleted) {
+                res.json({ removed: deleted });
+            } else {
+                res.status(404).json({ message: 'Could not find user with given id' });
+            }
+        })
+        .catch(error => {
+            res.status(500).json(error.message);
+        });
+});
+
+
 module.exports = server;
